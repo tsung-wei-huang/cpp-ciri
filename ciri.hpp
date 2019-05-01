@@ -2,6 +2,8 @@
 //
 // MIT License: Copyright (c) 2019 Tsung-Wei Huang and Chun-Xun Lin
 //
+// Cpp-Ciri is motivated by the C++ serialization library cereal but
+// we made it lite and pluggable with different devices.
 
 #pragma once
 
