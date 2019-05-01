@@ -12,9 +12,15 @@
 struct MyStruct {
   double x, y;
   
-  // Define an archive method to serialize/deserialize your class
+  // Define a save method to serialize data
   template <typename Archiver>
-  auto archive(Archiver& ar) {
+  auto save(Archiver& ar) const {
+    return ar(x, y);
+  } 
+  
+  // Define a load method to deserialize data
+  template <typename Archiver>
+  auto load(Archiver& ar) {
     return ar(x, y);
   }
 };

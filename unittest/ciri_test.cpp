@@ -114,7 +114,26 @@ struct PODs {
   double_t      _double = random<decltype(_double)>();
 
   template <typename ArchiverT>
-  std::streamsize archive( ArchiverT& ar ) {
+  auto save( ArchiverT& ar ) const {
+    return ar(
+      _bool,  
+      _char,  
+      _uchar, 
+      _uint8,
+      _int8,  
+      _uint16,
+      _int16, 
+      _uint32,
+      _int32, 
+      _uint64,
+      _int64, 
+      _float, 
+      _double
+    );
+  }
+  
+  template <typename ArchiverT>
+  auto load( ArchiverT& ar ) {
     return ar(
       _bool,  
       _char,  

@@ -149,7 +149,10 @@ class SizeTag {
     inline const T& get() const {return _item;}
 
     template <typename ArchiverT>
-    std::streamsize archive(ArchiverT & ar) { return ar(_item); }
+    auto save(ArchiverT & ar) const { return ar(_item); }
+    
+    template <typename ArchiverT>
+    auto load(ArchiverT & ar) { return ar(_item); }
 
   private:
 
@@ -182,7 +185,10 @@ class MapItem {
     inline const ValueT& value() const { return _value; }
 
     template <typename ArchiverT>
-    std::streamsize archive(ArchiverT & ar) { return ar(_key, _value); }
+    auto save(ArchiverT & ar) const { return ar(_key, _value); }
+    
+    template <typename ArchiverT>
+    auto load(ArchiverT & ar) { return ar(_key, _value); }
 
   private:
 
@@ -346,7 +352,7 @@ SizeType Ciri<Device, SizeType>::_ciri(T&& t) {
   }
   // Fall back to user-defined serialization method.
   else {
-    return t.archive(*this);
+    return t.save(*this);
   }
 }
 
@@ -580,7 +586,7 @@ SizeType Iric<Device, SizeType>::_iric(T&& t) {
     );
   }
   else {
-    return t.archive(*this);
+    return t.load(*this);
   }
 }
   
