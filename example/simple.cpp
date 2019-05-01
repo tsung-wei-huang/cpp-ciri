@@ -28,7 +28,7 @@ int main() {
   
   // serialization
   std::ostringstream oss;
-  ciri::Ciri<std::ostream> ciri(oss);
+  ciri::Ciri ciri(oss);
   auto num_output_bytes = ciri(oint, ostr, ostruct);
   std::cout << "serialized " << num_output_bytes << " bytes\n";  
 
@@ -39,7 +39,7 @@ int main() {
 
   // deserialization
   std::istringstream iss(oss.str());
-  ciri::Iric<std::istream> iric(iss);
+  ciri::Iric iric(iss);
   auto num_input_bytes = iric(iint, istr, istruct);
   std::cout << "deserialized " << num_input_bytes << " bytes\n";
   

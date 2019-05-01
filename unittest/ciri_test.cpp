@@ -160,7 +160,7 @@ void test_pod() {
 
   // Output stream.
   std::ostringstream os;
-  ciri::Ciri<std::ostream> oar(os);
+  ciri::Ciri oar(os);
 
   const auto o_bool   = random<int8_t>();
   const auto o_char   = random<char>(); 
@@ -196,7 +196,7 @@ void test_pod() {
 
   // InputStreamBuffer
   std::istringstream is(os.str()); 
-  ciri::Iric<std::istream> iar(is);
+  ciri::Iric iar(is);
 
   auto i_bool   = random<int8_t>();
   auto i_char   = random<char>(); 
@@ -258,13 +258,13 @@ void test_struct() {
 
     // Outputstream
     std::ostringstream os;
-    ciri::Ciri<std::ostream> oar(os);
+    ciri::Ciri oar(os);
     auto o_sz = oar(o_pods);
     //REQUIRE(o_sz == os.out_avail());
 
     // Inputstream
     std::istringstream is(os.str());
-    ciri::Iric<std::istream> iar(is);
+    ciri::Iric iar(is);
     auto i_sz = iar(i_pods);
     REQUIRE(is.rdbuf()->in_avail() == 0);
     
@@ -282,7 +282,7 @@ void test_string() {
 
     // Outputstream
     std::ostringstream os;
-    ciri::Ciri<std::ostream> oar(os);
+    ciri::Ciri oar(os);
 
     T o_char_str = random<T>();
     auto o_sz = oar(o_char_str);
@@ -290,7 +290,7 @@ void test_string() {
 
     // Inputstream
     std::istringstream is(os.str());
-    ciri::Iric<std::istream> iar(is);
+    ciri::Iric iar(is);
     
     T i_char_str;
     auto i_sz = iar(i_char_str);
@@ -306,7 +306,7 @@ void test_string() {
 for(size_t i=0; i<1024; i++) {                                 \
   const size_t num_data = random<size_t>(1, 1024);             \
   std::ostringstream os;                                       \
-  ciri::Ciri<std::ostream> oar(os);                            \
+  ciri::Ciri oar(os);                                          \
                                                                \
   std::container <int32_t>     o_int32s  (num_data);           \
   std::container <int64_t>     o_int64s  (num_data);           \
@@ -326,7 +326,7 @@ for(size_t i=0; i<1024; i++) {                                 \
   auto o_sz = oar(o_int32s, o_int64s, o_chars, o_floats, o_doubles, o_strings, o_podses);\
                                                                \
   std::istringstream is(os.str());                             \
-  ciri::Iric<std::istream> iar(is);                            \
+  ciri::Iric iar(is);                                          \
                                                                \
   std::container <int32_t>     i_int32s;                       \
   std::container <int64_t>     i_int64s;                       \
@@ -354,7 +354,7 @@ for(size_t i=0; i<1024; i++) {                                 \
 for (size_t i = 0; i < 1024; i++) {                                              \
   const size_t num_data = random<size_t>(1, 1024);                               \
   std::ostringstream os;                                                         \
-  ciri::Ciri<std::ostream> oar(os);                                              \
+  ciri::Ciri oar(os);                                                            \
                                                                                  \
   std::container<int32_t, int32_t> o_int32s;                                     \
   std::container<int64_t, int64_t> o_int64s;                                     \
@@ -375,7 +375,7 @@ for (size_t i = 0; i < 1024; i++) {                                             
   auto o_sz = oar(o_int32s, o_int64s, o_chars, o_floats, o_doubles , o_strings); \
                                                                                  \
   std::istringstream is(os.str());                                               \
-  ciri::Iric<std::istream> iar(is);                                              \
+  ciri::Iric iar(is);                                                            \
                                                                                  \
   std::container<int32_t, int32_t> i_int32s;                                     \
   std::container<int64_t, int64_t> i_int64s;                                     \
@@ -402,7 +402,7 @@ for (size_t i = 0; i < 1024; i++) {                                             
 for (size_t i = 0; i < 1024; i++) {                                             \
   const size_t num_data = random<size_t>(1, 1024);                              \
   std::ostringstream os;                                                        \
-  ciri::Ciri<std::ostream> oar(os);                                             \
+  ciri::Ciri oar(os);                                             \
                                                                                 \
   std::container<int32_t> o_int32s;                                             \
   std::container<int64_t> o_int64s;                                             \
@@ -422,7 +422,7 @@ for (size_t i = 0; i < 1024; i++) {                                             
   auto o_sz = oar(o_int32s, o_int64s, o_chars, o_floats, o_doubles, o_strings); \
                                                                                 \
   std::istringstream is(os.str());                                              \
-  ciri::Iric<std::istream> iar(is);                                             \
+  ciri::Iric iar(is);                                             \
                                                                                 \
   std::container<int32_t> i_int32s;                                             \
   std::container<int64_t> i_int64s;                                             \
@@ -461,7 +461,7 @@ void test_array() {
     for(auto &i : ostring) i = random<std::string>();
 
     std::ostringstream os;
-    ciri::Ciri<std::ostream> oar(os);
+    ciri::Ciri oar(os);
     auto osz = oar(ochar, oint, odouble, ostring);
 
     // Input
@@ -471,7 +471,7 @@ void test_array() {
     std::array<std::string, 2048> istring;
     
     std::istringstream is(os.str());
-    ciri::Iric<std::istream> iar(is);
+    ciri::Iric iar(is);
 
     auto isz = iar(ichar, iint, idouble, istring);
     REQUIRE(0 == is.rdbuf()->in_avail());
@@ -511,12 +511,12 @@ void test_variant() {
 
     // Output archiver
     std::ostringstream os;
-    ciri::Ciri<std::ostream> oar(os);
+    ciri::Ciri oar(os);
     auto osz = oar(opod1, opod2, opod3, omix2, orec2);
     
     // Input archiver
     std::istringstream is(os.str());
-    ciri::Iric<std::istream> iar(is);
+    ciri::Iric iar(is);
     auto isz = iar(ipod1, ipod2, ipod3, imix2, irec2);
     REQUIRE(0 == is.rdbuf()->in_avail());
 
@@ -544,7 +544,7 @@ void test_time_point() {
     
     // Output archiver
     std::ostringstream os;
-    ciri::Ciri<std::ostream> oar(os);
+    ciri::Ciri oar(os);
     auto osz = oar(o_tpt1, o_tpt2, o_tpt3, o_dur1, o_dur2, o_dur3);
 
     decltype(o_tpt1) i_tpt1;
@@ -556,7 +556,7 @@ void test_time_point() {
 
     // Input archiver
     std::istringstream is(os.str());
-    ciri::Iric<std::istream> iar(is);
+    ciri::Iric iar(is);
     auto isz = iar(i_tpt1, i_tpt2, i_tpt3, i_dur1, i_dur2, i_dur3);
 
     REQUIRE(0 == is.rdbuf()->in_avail());
@@ -584,12 +584,12 @@ void test_optional() {
 
     // Output archiver
     std::ostringstream os;
-    ciri::Ciri<std::ostream> oar(os);
+    ciri::Ciri oar(os);
     auto osz = oar(o_nbool, o_ybool, o_nstr, o_ystr);
 
     // Input archiver
     std::istringstream is(os.str());
-    ciri::Iric<std::istream> iar(is);
+    ciri::Iric iar(is);
     auto isz = iar(i_nbool, i_ybool, i_nstr, i_ystr);
     REQUIRE(0 == is.rdbuf()->in_avail());
     REQUIRE(osz == isz);
@@ -614,12 +614,12 @@ void test_tuple() {
 
     // Output archiver
     std::ostringstream os;
-    ciri::Ciri<std::ostream> oar(os);
+    ciri::Ciri oar(os);
     auto osz = oar(o0, o1, o2, o3, o4);
 
     // Input archiver
     std::istringstream is(os.str());
-    ciri::Iric<std::istream> iar(is);
+    ciri::Iric iar(is);
     auto isz = iar(i0, i1, i2, i3, i4);
 
     REQUIRE(0 == is.rdbuf()->in_avail());
