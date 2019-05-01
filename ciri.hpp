@@ -534,7 +534,7 @@ SizeType Iric<Device, SizeType>::_iric(T&& t) {
       return sizeof(t);
     } 
     else {
-      auto sz = std::streamsize{0};
+      SizeType sz {0};
       for(auto && v : t) {
         sz += _iric(v);
       }
