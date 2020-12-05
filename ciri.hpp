@@ -1,10 +1,3 @@
-// Cpp-Ciri: A Fast Serialization Library in Modern C++
-//
-// MIT License: Copyright (c) 2019 Tsung-Wei Huang and Chun-Xun Lin
-//
-// Cpp-Ciri is motivated by the C++ serialization library cereal but
-// we made it lite and pluggable with different devices.
-
 #pragma once
 
 #include <tuple>
@@ -32,73 +25,174 @@ namespace ciri {
 // Supported C++ STL type
 // ----------------------------------------------------------------------------
 
-template <typename T> struct is_std_basic_string : std::false_type {};
-template <typename... ArgsT> struct is_std_basic_string <std::basic_string<ArgsT...>> : std::true_type {};
-template <typename T> constexpr bool is_std_basic_string_v = is_std_basic_string<T>::value;
+// std::basic_string
+template <typename T> 
+struct is_std_basic_string : std::false_type {};
 
-template <typename T> struct is_std_array : std::false_type {};
-template <typename T, size_t N> struct is_std_array <std::array<T, N>> : std::true_type {};
-template <typename T> constexpr bool is_std_array_v = is_std_array<T>::value;
+template <typename... ArgsT> 
+struct is_std_basic_string <std::basic_string<ArgsT...>> : std::true_type {};
 
-template <typename T> struct is_std_vector : std::false_type {};
-template <typename... ArgsT> struct is_std_vector <std::vector<ArgsT...>> : std::true_type {};
-template <typename T> constexpr bool is_std_vector_v = is_std_vector<T>::value;
+template <typename T> 
+constexpr bool is_std_basic_string_v = is_std_basic_string<T>::value;
 
-template <typename T> struct is_std_deque : std::false_type {};
-template <typename... ArgsT> struct is_std_deque <std::deque<ArgsT...>> : std::true_type {};
-template <typename T> constexpr bool is_std_deque_v = is_std_deque<T>::value;
+// std::array
+template <typename T> 
+struct is_std_array : std::false_type {};
 
-template <typename T> struct is_std_list : std::false_type {};
-template <typename... ArgsT> struct is_std_list <std::list<ArgsT...>> : std::true_type {};
-template <typename T> constexpr bool is_std_list_v = is_std_list<T>::value;
+template <typename T, size_t N> 
+struct is_std_array <std::array<T, N>> : std::true_type {};
 
-template <typename T> struct is_std_forward_list : std::false_type {};
-template <typename... ArgsT> struct is_std_forward_list <std::forward_list<ArgsT...>> : std::true_type {};
-template <typename T> constexpr bool is_std_forward_list_v = is_std_forward_list<T>::value;
+template <typename T> 
+constexpr bool is_std_array_v = is_std_array<T>::value;
 
-template <typename T> struct is_std_map : std::false_type {};
-template <typename... ArgsT> struct is_std_map <std::map<ArgsT...>> : std::true_type {};
-template <typename T> constexpr bool is_std_map_v = is_std_map<T>::value;
+// std::vector
+template <typename T> 
+struct is_std_vector : std::false_type {};
 
-template <typename T> struct is_std_unordered_map : std::false_type {};
-template <typename... ArgsT> struct is_std_unordered_map <std::unordered_map<ArgsT...>> : std::true_type {};
-template <typename T> constexpr bool is_std_unordered_map_v = is_std_unordered_map<T>::value;
+template <typename... ArgsT> 
+struct is_std_vector <std::vector<ArgsT...>> : std::true_type {};
 
-template <typename T> struct is_std_set : std::false_type {};
-template <typename... ArgsT> struct is_std_set <std::set<ArgsT...>> : std::true_type {};
-template <typename T> constexpr bool is_std_set_v = is_std_set<T>::value;
+template <typename T> 
+constexpr bool is_std_vector_v = is_std_vector<T>::value;
 
-template <typename T> struct is_std_unordered_set : std::false_type {};
-template <typename... ArgsT> struct is_std_unordered_set <std::unordered_set<ArgsT...>> : std::true_type {};
-template <typename T> constexpr bool is_std_unordered_set_v = is_std_unordered_set<T>::value;
+// std::deque
+template <typename T> 
+struct is_std_deque : std::false_type {};
 
-template <typename T> struct is_std_variant : std::false_type {};
-template <typename... ArgsT> struct is_std_variant <std::variant<ArgsT...>> : std::true_type {};
-template <typename T> constexpr bool is_std_variant_v = is_std_variant<T>::value;
+template <typename... ArgsT> 
+struct is_std_deque <std::deque<ArgsT...>> : std::true_type {};
 
-template <typename T> struct is_std_optional : std::false_type {};
-template <typename... ArgsT> struct is_std_optional <std::optional<ArgsT...>> : std::true_type {};
-template <typename T> constexpr bool is_std_optional_v = is_std_optional<T>::value;
+template <typename T> 
+constexpr bool is_std_deque_v = is_std_deque<T>::value;
 
-template <typename T> struct is_std_unique_ptr : std::false_type {};
-template <typename... ArgsT> struct is_std_unique_ptr <std::unique_ptr<ArgsT...>> : std::true_type {};
-template <typename T> constexpr bool is_std_unique_ptr_v = is_std_unique_ptr<T>::value;
+// std::list
+template <typename T> 
+struct is_std_list : std::false_type {};
 
-template <typename T> struct is_std_shared_ptr : std::false_type {};
-template <typename... ArgsT> struct is_std_shared_ptr <std::shared_ptr<ArgsT...>> : std::true_type {};
-template <typename T> constexpr bool is_std_shared_ptr_v = is_std_shared_ptr<T>::value;
+template <typename... ArgsT> 
+struct is_std_list <std::list<ArgsT...>> : std::true_type {};
 
+template <typename T> 
+constexpr bool is_std_list_v = is_std_list<T>::value;
+
+// std::forward_list
+template <typename T> 
+struct is_std_forward_list : std::false_type {};
+
+template <typename... ArgsT> 
+struct is_std_forward_list <std::forward_list<ArgsT...>> : std::true_type {};
+
+template <typename T> 
+constexpr bool is_std_forward_list_v = is_std_forward_list<T>::value;
+
+// std::map
+template <typename T> 
+struct is_std_map : std::false_type {};
+
+template <typename... ArgsT> 
+struct is_std_map <std::map<ArgsT...>> : std::true_type {};
+
+template <typename T> 
+constexpr bool is_std_map_v = is_std_map<T>::value;
+
+// std::unordered_map
+template <typename T> 
+struct is_std_unordered_map : std::false_type {};
+
+template <typename... ArgsT> 
+struct is_std_unordered_map <std::unordered_map<ArgsT...>> : std::true_type {};
+
+template <typename T> 
+constexpr bool is_std_unordered_map_v = is_std_unordered_map<T>::value;
+
+// std::set
+template <typename T> 
+struct is_std_set : std::false_type {};
+
+template <typename... ArgsT> 
+struct is_std_set <std::set<ArgsT...>> : std::true_type {};
+
+template <typename T> 
+constexpr bool is_std_set_v = is_std_set<T>::value;
+
+// std::unordered_set
+template <typename T> 
+struct is_std_unordered_set : std::false_type {};
+
+template <typename... ArgsT> 
+struct is_std_unordered_set <std::unordered_set<ArgsT...>> : std::true_type {};
+
+template <typename T> 
+constexpr bool is_std_unordered_set_v = is_std_unordered_set<T>::value;
+
+// std::variant
+template <typename T> 
+struct is_std_variant : std::false_type {};
+
+template <typename... ArgsT> 
+struct is_std_variant <std::variant<ArgsT...>> : std::true_type {};
+
+template <typename T> 
+constexpr bool is_std_variant_v = is_std_variant<T>::value;
+
+// std::optional
+template <typename T> 
+struct is_std_optional : std::false_type {};
+
+template <typename... ArgsT> 
+struct is_std_optional <std::optional<ArgsT...>> : std::true_type {};
+
+template <typename T> 
+constexpr bool is_std_optional_v = is_std_optional<T>::value;
+
+// std::unique_ptr
+template <typename T> 
+struct is_std_unique_ptr : std::false_type {};
+
+template <typename... ArgsT> 
+struct is_std_unique_ptr <std::unique_ptr<ArgsT...>> : std::true_type {};
+
+template <typename T> 
+constexpr bool is_std_unique_ptr_v = is_std_unique_ptr<T>::value;
+
+// std::shared_ptr
+template <typename T> 
+struct is_std_shared_ptr : std::false_type {};
+
+template <typename... ArgsT> 
+struct is_std_shared_ptr <std::shared_ptr<ArgsT...>> : std::true_type {};
+
+template <typename T> 
+constexpr bool is_std_shared_ptr_v = is_std_shared_ptr<T>::value;
+
+// std::duration
 template <typename T> struct is_std_duration : std::false_type {};
-template <typename... ArgsT> struct is_std_duration<std::chrono::duration<ArgsT...>> : std::true_type {};
-template <typename T> constexpr bool is_std_duration_v = is_std_duration<T>::value;
 
-template <typename T> struct is_std_time_point : std::false_type {};
-template <typename... ArgsT> struct is_std_time_point<std::chrono::time_point<ArgsT...>> : std::true_type {};
-template <typename T> constexpr bool is_std_time_point_v = is_std_time_point<T>::value;
+template <typename... ArgsT> 
+struct is_std_duration<std::chrono::duration<ArgsT...>> : std::true_type {};
 
-template <typename T> struct is_std_tuple : std::false_type {};
-template <typename... ArgsT> struct is_std_tuple<std::tuple<ArgsT...>> : std::true_type {};
-template <typename T> constexpr bool is_std_tuple_v = is_std_tuple<T>::value;
+template <typename T> 
+constexpr bool is_std_duration_v = is_std_duration<T>::value;
+
+// std::time_point
+template <typename T> 
+struct is_std_time_point : std::false_type {};
+
+template <typename... ArgsT> 
+struct is_std_time_point<std::chrono::time_point<ArgsT...>> : std::true_type {};
+
+template <typename T> 
+constexpr bool is_std_time_point_v = is_std_time_point<T>::value;
+
+// std::tuple
+template <typename T> 
+struct is_std_tuple : std::false_type {};
+
+template <typename... ArgsT> 
+struct is_std_tuple<std::tuple<ArgsT...>> : std::true_type {};
+
+template <typename T> 
+constexpr bool is_std_tuple_v = is_std_tuple<T>::value;
 
 //-----------------------------------------------------------------------------
 // Type extraction.
@@ -204,13 +298,13 @@ MapItem<KeyT, ValueT> make_kv_pair(KeyT&& k, ValueT&& v) {
 
 // ----------------------------------------------------------------------------
 
-// Class: Ciri
+// Class: Serializer
 template <typename Device = std::ostream, typename SizeType = std::streamsize>
-class Ciri {
+class Serializer {
 
   public:
     
-    Ciri(Device& device);
+    Serializer(Device& device);
     
     template <typename... T>
     SizeType operator()(T&&... items);
@@ -220,25 +314,25 @@ class Ciri {
     Device& _device;
     
     template <typename T>
-    SizeType _ciri(T&&);
+    SizeType _save(T&&);
 };
 
 // Constructor
 template <typename Device, typename SizeType>
-Ciri<Device, SizeType>::Ciri(Device& device) : _device(device) {
+Serializer<Device, SizeType>::Serializer(Device& device) : _device(device) {
 }
 
 // Operator ()
 template <typename Device, typename SizeType>
 template <typename... T>
-SizeType Ciri<Device, SizeType>::operator() (T&&... items) {
-  return (_ciri(std::forward<T>(items)) + ...);
+SizeType Serializer<Device, SizeType>::operator() (T&&... items) {
+  return (_save(std::forward<T>(items)) + ...);
 }
 
-// Function: _ciri
+// Function: _save
 template <typename Device, typename SizeType>
 template <typename T>
-SizeType Ciri<Device, SizeType>::_ciri(T&& t) {
+SizeType Serializer<Device, SizeType>::_save(T&& t) {
 
   using U = std::decay_t<T>;
   
@@ -249,59 +343,59 @@ SizeType Ciri<Device, SizeType>::_ciri(T&& t) {
   }
   // std::basic_string
   else if constexpr(is_std_basic_string_v<U>) {
-    auto sz = _ciri(make_size_tag(t.size()));
+    auto sz = _save(make_size_tag(t.size()));
     _device.write(reinterpret_cast<const char*>(t.data()), t.size()*sizeof(typename U::value_type));
     return sz + t.size()*sizeof(typename U::value_type);
   }
   // std::vector
   else if constexpr(is_std_vector_v<U>) {
     if constexpr (std::is_arithmetic_v<typename U::value_type>) {
-      auto sz = _ciri(make_size_tag(t.size()));
+      auto sz = _save(make_size_tag(t.size()));
       _device.write(reinterpret_cast<const char*>(t.data()), t.size() * sizeof(typename U::value_type));
       return sz + t.size() * sizeof(typename U::value_type);
     } else {
-      auto sz = _ciri(make_size_tag(t.size()));
+      auto sz = _save(make_size_tag(t.size()));
       for(auto&& item : t) {
-        sz += _ciri(item);
+        sz += _save(item);
       }
       return sz;
     }
   }
   // std::deque and std::list
   else if constexpr(is_std_deque_v<U> || is_std_list_v<U>) {
-    auto sz = _ciri(make_size_tag(t.size()));
+    auto sz = _save(make_size_tag(t.size()));
     for(auto&& item : t) {
-      sz += _ciri(item);
+      sz += _save(item);
     }
     return sz;
   }
   // std::forward_list
   else if constexpr(is_std_forward_list_v<U>) {
-    auto sz = _ciri(make_size_tag(std::distance(t.begin(), t.end())));
+    auto sz = _save(make_size_tag(std::distance(t.begin(), t.end())));
     for(auto&& item : t) {
-      sz += _ciri(item);
+      sz += _save(item);
     }
     return sz;
   }
   // std::map and std::unordered_map
   else if constexpr(is_std_map_v<U> || is_std_unordered_map_v<U>) {
-    auto sz = _ciri(make_size_tag(t.size()));
+    auto sz = _save(make_size_tag(t.size()));
     for(auto&& [k, v] : t) {
-      sz += _ciri(make_kv_pair(k, v));
+      sz += _save(make_kv_pair(k, v));
     }
     return sz;
   }
   // std::set and std::unordered_set
   else if constexpr(is_std_set_v<U> || is_std_unordered_set_v<U>) {
-    auto sz = _ciri(make_size_tag(t.size()));
+    auto sz = _save(make_size_tag(t.size()));
     for(auto&& item : t) {
-      sz += _ciri(item);
+      sz += _save(item);
     }
     return sz;
   }
   // enum
   else if constexpr(std::is_enum_v<U>) {
-    return _ciri(static_cast<std::underlying_type_t<U>>(t));
+    return _save(static_cast<std::underlying_type_t<U>>(t));
   }
   // std::array
   else if constexpr(is_std_array_v<U>) {
@@ -314,38 +408,38 @@ SizeType Ciri<Device, SizeType>::_ciri(T&& t) {
     else {
       SizeType sz {0};
       for(auto&& item : t) {
-        sz += _ciri(item);
+        sz += _save(item);
       }
       return sz;
     }
   }
   // std::variant
   else if constexpr(is_std_variant_v<U>) {
-    return _ciri(t.index()) + 
-           std::visit([&] (auto&& arg){ return _ciri(arg);}, t);
+    return _save(t.index()) + 
+           std::visit([&] (auto&& arg){ return _save(arg);}, t);
   }
   // std::duration
   else if constexpr(is_std_duration_v<U>) {
-    return _ciri(t.count());
+    return _save(t.count());
   }
   // std::time_point
   else if constexpr(is_std_time_point_v<U>) {
-    return _ciri(t.time_since_epoch());
+    return _save(t.time_since_epoch());
   }
   // std::optional
   else if constexpr(is_std_optional_v<U>) {
     if(bool flag = t.has_value(); flag) {
-      return _ciri(flag) + _ciri(*t);
+      return _save(flag) + _save(*t);
     }
     else {
-      return _ciri(flag);
+      return _save(flag);
     }
   }
   // std::tuple
   else if constexpr(is_std_tuple_v<U>) {
     return std::apply(
       [this] (auto&&... args) {
-        return (_ciri(std::forward<decltype(args)>(args)) + ... + 0); 
+        return (_save(std::forward<decltype(args)>(args)) + ... + 0); 
       },
       std::forward<T>(t)
     );
@@ -358,13 +452,13 @@ SizeType Ciri<Device, SizeType>::_ciri(T&& t) {
 
 // ----------------------------------------------------------------------------
 
-// Class: Iric
+// Class: Deserializer
 template <typename Device = std::ostream, typename SizeType = std::streamsize>
-class Iric {
+class Deserializer {
 
   public:
     
-    Iric(Device& device);
+    Deserializer(Device& device);
     
     template <typename... T>
     SizeType operator()(T&&... items);
@@ -374,7 +468,7 @@ class Iric {
     Device& _device;
     
     template <typename T>
-    SizeType _iric(T&&);
+    SizeType _load(T&&);
     
     // Function: _variant_helper
     template <size_t I = 0, typename... ArgsT, std::enable_if_t<I==sizeof...(ArgsT)>* = nullptr>
@@ -387,20 +481,20 @@ class Iric {
 
 // Constructor
 template <typename Device, typename SizeType>
-Iric<Device, SizeType>::Iric(Device& device) : _device(device) {
+Deserializer<Device, SizeType>::Deserializer(Device& device) : _device(device) {
 }
 
 // Operator ()
 template <typename Device, typename SizeType>
 template <typename... T>
-SizeType Iric<Device, SizeType>::operator() (T&&... items) {
-  return (_iric(std::forward<T>(items)) + ...);
+SizeType Deserializer<Device, SizeType>::operator() (T&&... items) {
+  return (_load(std::forward<T>(items)) + ...);
 }
 
-// Function: _iric
+// Function: _load
 template <typename Device, typename SizeType>
 template <typename T>
-SizeType Iric<Device, SizeType>::_iric(T&& t) {
+SizeType Deserializer<Device, SizeType>::_load(T&& t) {
 
   using U = std::decay_t<T>;
   
@@ -412,7 +506,7 @@ SizeType Iric<Device, SizeType>::_iric(T&& t) {
   // std::basic_string
   else if constexpr(is_std_basic_string_v<U>) {
     typename U::size_type num_chars;
-    auto sz = _iric(make_size_tag(num_chars));
+    auto sz = _load(make_size_tag(num_chars));
     t.resize(num_chars);
     _device.read(reinterpret_cast<char*>(t.data()), num_chars*sizeof(typename U::value_type));
     return sz + num_chars*sizeof(typename U::value_type);
@@ -421,16 +515,16 @@ SizeType Iric<Device, SizeType>::_iric(T&& t) {
   else if constexpr(is_std_vector_v<U>) {
     typename U::size_type num_data;
     if constexpr(std::is_arithmetic_v<typename U::value_type>) {
-      auto sz = _iric(make_size_tag(num_data));
+      auto sz = _load(make_size_tag(num_data));
       t.resize(num_data);
       _device.read(reinterpret_cast<char*>(t.data()), num_data * sizeof(typename U::value_type));
       return sz + num_data * sizeof(typename U::value_type);
     } 
     else {
-      auto sz = _iric(make_size_tag(num_data));
+      auto sz = _load(make_size_tag(num_data));
       t.resize(num_data);
       for(auto && v : t) {
-        sz += _iric(v);
+        sz += _load(v);
       }
       return sz;
     }
@@ -439,11 +533,11 @@ SizeType Iric<Device, SizeType>::_iric(T&& t) {
   else if constexpr(is_std_deque_v<U> || is_std_list_v<U> || is_std_forward_list_v<U>) {
 
     typename U::size_type num_data;
-    auto sz = _iric(make_size_tag(num_data));
+    auto sz = _load(make_size_tag(num_data));
 
     t.resize(num_data);
     for(auto && v : t) {
-      sz += _iric(v);
+      sz += _load(v);
     }
     return sz;
   }
@@ -451,7 +545,7 @@ SizeType Iric<Device, SizeType>::_iric(T&& t) {
   else if constexpr(is_std_map_v<U>) {
 
     typename U::size_type num_data;
-    auto sz = _iric(make_size_tag(num_data));
+    auto sz = _load(make_size_tag(num_data));
     
     t.clear();
     auto hint = t.begin();
@@ -460,7 +554,7 @@ SizeType Iric<Device, SizeType>::_iric(T&& t) {
     typename U::mapped_type v;
 
     for(size_t i=0; i<num_data; ++i) {
-      sz += _iric(make_kv_pair(k, v));
+      sz += _load(make_kv_pair(k, v));
       hint = t.emplace_hint(hint, std::move(k), std::move(v));
     }
     return sz;
@@ -469,7 +563,7 @@ SizeType Iric<Device, SizeType>::_iric(T&& t) {
   else if constexpr(is_std_unordered_map_v<U>) {
 
     typename U::size_type num_data;
-    auto sz = _iric(make_size_tag(num_data));
+    auto sz = _load(make_size_tag(num_data));
 
     t.clear();
     t.reserve(num_data);
@@ -478,7 +572,7 @@ SizeType Iric<Device, SizeType>::_iric(T&& t) {
     typename U::mapped_type v;
 
     for(size_t i=0; i<num_data; ++i) {
-      sz += _iric(make_kv_pair(k, v));
+      sz += _load(make_kv_pair(k, v));
       t.emplace(std::move(k), std::move(v));
     }
     
@@ -488,7 +582,7 @@ SizeType Iric<Device, SizeType>::_iric(T&& t) {
   else if constexpr(is_std_set_v<U>) {
 
     typename U::size_type num_data;
-    auto sz = _iric(make_size_tag(num_data));
+    auto sz = _load(make_size_tag(num_data));
 
     t.clear();
     auto hint = t.begin();
@@ -496,7 +590,7 @@ SizeType Iric<Device, SizeType>::_iric(T&& t) {
     typename U::key_type k;
 
     for(size_t i=0; i<num_data; ++i) {   
-      sz += _iric(k);
+      sz += _load(k);
       hint = t.emplace_hint(hint, std::move(k));
     }   
     return sz;
@@ -505,7 +599,7 @@ SizeType Iric<Device, SizeType>::_iric(T&& t) {
   else if constexpr(is_std_unordered_set_v<U>) {
 
     typename U::size_type num_data;
-    auto sz = _iric(make_size_tag(num_data));
+    auto sz = _load(make_size_tag(num_data));
 
     t.clear();
     t.reserve(num_data);
@@ -513,7 +607,7 @@ SizeType Iric<Device, SizeType>::_iric(T&& t) {
     typename U::key_type k;
 
     for(size_t i=0; i<num_data; ++i) {   
-      sz += _iric(k);
+      sz += _load(k);
       t.emplace(std::move(k));
     }   
     return sz;
@@ -521,7 +615,7 @@ SizeType Iric<Device, SizeType>::_iric(T&& t) {
   // enum
   else if constexpr(std::is_enum_v<U>) {
     std::underlying_type_t<U> k;
-    auto sz = _iric(k);
+    auto sz = _load(k);
     t = static_cast<U>(k);
     return sz;
   }
@@ -536,7 +630,7 @@ SizeType Iric<Device, SizeType>::_iric(T&& t) {
     else {
       SizeType sz {0};
       for(auto && v : t) {
-        sz += _iric(v);
+        sz += _load(v);
       }
       return sz;
     }
@@ -544,32 +638,32 @@ SizeType Iric<Device, SizeType>::_iric(T&& t) {
   // std::variant
   else if constexpr(is_std_variant_v<U>) {
     std::decay_t<decltype(t.index())> idx;
-    auto s = _iric(idx);
+    auto s = _load(idx);
     return s + _variant_helper(idx, t);
   }
   // std::duration
   else if constexpr(is_std_duration_v<U>) {
     typename U::rep count;
-    auto s = _iric(count);
+    auto s = _load(count);
     t = U{count};
     return s;
   }
   // std::time_point
   else if constexpr(is_std_time_point_v<U>) {
     typename U::duration elapsed;
-    auto s = _iric(elapsed);
+    auto s = _load(elapsed);
     t = U{elapsed};
     return s;
   }
   // std::optional
   else if constexpr(is_std_optional_v<U>) {
     bool has_value;
-    auto s = _iric(has_value);
+    auto s = _load(has_value);
     if(has_value) {
       if(!t) {
         t = typename U::value_type();
       }
-      s += _iric(*t);
+      s += _load(*t);
     }
     else {
       t.reset(); 
@@ -580,7 +674,7 @@ SizeType Iric<Device, SizeType>::_iric(T&& t) {
   else if constexpr(is_std_tuple_v<U>) {
     return std::apply(
       [this] (auto&&... args) {
-        return (_iric(std::forward<decltype(args)>(args)) + ... + 0); 
+        return (_load(std::forward<decltype(args)>(args)) + ... + 0); 
       },
       std::forward<T>(t)
     );
@@ -593,14 +687,14 @@ SizeType Iric<Device, SizeType>::_iric(T&& t) {
 // Function: _variant_helper
 template <typename Device, typename SizeType>
 template <size_t I, typename... ArgsT, std::enable_if_t<I==sizeof...(ArgsT)>*>
-SizeType Iric<Device, SizeType>::_variant_helper(size_t i, std::variant<ArgsT...>& v) {
+SizeType Deserializer<Device, SizeType>::_variant_helper(size_t i, std::variant<ArgsT...>& v) {
   return 0;
 }
 
 // Function: _variant_helper
 template <typename Device, typename SizeType>
 template <size_t I, typename... ArgsT, std::enable_if_t<I<sizeof...(ArgsT)>*>
-SizeType Iric<Device, SizeType>::_variant_helper(size_t i, std::variant<ArgsT...>& v) {
+SizeType Deserializer<Device, SizeType>::_variant_helper(size_t i, std::variant<ArgsT...>& v) {
   if(i == 0) {
     using type = ExtractType_t<I, std::variant<ArgsT...>>;
     if(v.index() != I) {
@@ -610,7 +704,7 @@ SizeType Iric<Device, SizeType>::_variant_helper(size_t i, std::variant<ArgsT...
       );
       v = type();
     }
-    return _iric(std::get<type>(v));
+    return _load(std::get<type>(v));
   }
   return _variant_helper<I+1, ArgsT...>(i-1, v);
 }
