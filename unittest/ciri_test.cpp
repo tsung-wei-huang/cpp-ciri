@@ -10,7 +10,7 @@
 
 // Function: random_engine
 inline std::default_random_engine& random_engine() {
-  thread_local static std::default_random_engine gen{0};
+  thread_local std::default_random_engine gen{0};
   return gen;
 }
 
